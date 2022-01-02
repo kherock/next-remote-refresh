@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import { useRemoteRefresh } from 'next-remote-refresh/hook'
 
-export default function Index({ name, version, description }) {
+export default function Index ({ name, version, description }) {
   const [count, setCount] = useState(0)
   useRemoteRefresh()
   return (
@@ -24,10 +24,10 @@ export default function Index({ name, version, description }) {
   )
 }
 
-export function getStaticProps() {
+export function getStaticProps () {
   return {
     props: JSON.parse(
-      fs.readFileSync(path.resolve(process.cwd(), '../package.json'), 'utf-8')
+      fs.readFileSync(path.resolve(process.cwd(), '../package.json'), 'utf-8'),
     ),
   }
 }

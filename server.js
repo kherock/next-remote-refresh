@@ -4,7 +4,7 @@ const path = require('path')
 const WebSocket = require('ws')
 const chokidar = require('chokidar')
 
-module.exports = function createServer({ paths, ignored }) {
+module.exports = function createServer ({ paths, ignored }) {
   const app = express()
   const server = http.createServer(app)
   const wss = new WebSocket.Server({ server })
@@ -19,16 +19,16 @@ module.exports = function createServer({ paths, ignored }) {
 
   server.listen(0, () =>
     console.log(
-      `[remote-refresh] server is listening at port ${server.address().port}`
-    )
+      `[remote-refresh] server is listening at port ${server.address().port}`,
+    ),
   )
 
   chokidar
     .watch(
       (Array.isArray(paths) ? paths : [paths]).map((filePath) =>
-        path.resolve(process.cwd(), filePath)
+        path.resolve(process.cwd(), filePath),
       ),
-      { ignored }
+      { ignored },
     )
     .on('change', (filePath) => {
       const baseName = path.basename(path.dirname(process.cwd()))

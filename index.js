@@ -1,9 +1,9 @@
 const createServer = require('./server')
 
-module.exports = function plugin(options) {
+module.exports = function plugin (options) {
   let port
 
-  return function withConfig(nextConfig = {}) {
+  return function withConfig (nextConfig = {}) {
     if (process.env.NODE_ENV !== 'production') {
       if (!port) {
         port = createServer(options)
