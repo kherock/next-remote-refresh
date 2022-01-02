@@ -1,5 +1,5 @@
 env:
-  commonjs: true
+  browser: true
   node: true
 extends:
   - standard-with-typescript
@@ -9,3 +9,7 @@ rules:
   comma-dangle:
     - error
     - always-multiline
+overrides:
+  - files: __tests__/**/*
+    env:
+      jest: true
