@@ -10,6 +10,6 @@ rules:
     - error
     - always-multiline
 overrides:
-  - files: __tests__/**/*
+  - files: [__tests__/**/*, '**/*.test.*']
     env:
       jest: true

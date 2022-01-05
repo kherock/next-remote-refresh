@@ -1,12 +1,10 @@
-const express = require('express')
 const http = require('http')
 const path = require('path')
 const WebSocket = require('ws')
 const chokidar = require('chokidar')
 
-module.exports = function createServer ({ paths, ignored }) {
-  const app = express()
-  const server = http.createServer(app)
+module.exports = function createServer ({ paths, ignored, signal }) {
+  const server = http.createServer()
   const wss = new WebSocket.Server({ server })
   let sockets = []
 
@@ -23,7 +21,7 @@ module.exports = function createServer ({ paths, ignored }) {
     ),
   )
 
-  chokidar
+  const watcher = chokidar
     .watch(
       (Array.isArray(paths) ? paths : [paths]).map((filePath) =>
         path.resolve(process.cwd(), filePath),
@@ -36,6 +34,14 @@ module.exports = function createServer ({ paths, ignored }) {
       console.log(`[remote-refresh] ${path.basename(filePath)} updated`)
       sockets.map((socket) => socket.send(updatedPath))
     })
+
+  if (signal) {
+    signal.addEventListener('abort', () => {
+      watcher.close()
+      wss.close()
+      server.close()
+    })
+  }
 
   return server.address().port
 }
